@@ -1,1 +1,5 @@
-<p>character-details works!</p>
+<div *ngIf="characterDetail">
+  <p>{{ characterDetail | json }}</p>
+</div>
+
+<a routerLink="/">Go back to the list</a>

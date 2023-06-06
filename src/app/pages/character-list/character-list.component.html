@@ -1,8 +1,10 @@
 <mat-grid-list cols="3">
   <mat-grid-tile *ngFor="let character of characterList">
-    <mat-card>
-      <mat-card-header>{{ character.name }}</mat-card-header>
-      <img mat-card-image [src]="character.image" />
-    </mat-card>
+    <a [routerLink]="['character', character.id]">
+      <mat-card>
+        <mat-card-header>{{ character.name }}</mat-card-header>
+        <img mat-card-image [src]="character.image" />
+      </mat-card>
+    </a>
   </mat-grid-tile>
 </mat-grid-list>
