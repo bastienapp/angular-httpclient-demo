@@ -15,7 +15,7 @@ type Character = {
 })
 export class CharacterListComponent implements OnInit {
 
-  characterList = Array<Character>();
+  characterList: Character[] = [];
 
   // constructeur: ne sert qu'à faire de l'injection de dépendance
   constructor(private httpClient: HttpClient) { }
@@ -28,7 +28,7 @@ export class CharacterListComponent implements OnInit {
     this.httpClient
       .get<Character[]>("https://hp-api.onrender.com/api/characters")
       .subscribe((response) => {
-        //this.characterList = response;
+        this.characterList = response;
       })
   }
 }
