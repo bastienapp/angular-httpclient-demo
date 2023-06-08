@@ -1,13 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-type Character = {
-
-  id: string;
-  name: string;
-  image: string;
-}
+import { Character } from 'src/app/models/character.model';
+import { ApiCharacterService } from 'src/app/services/api-character.service';
 
 @Component({
   selector: 'app-character-details',
@@ -16,27 +10,27 @@ type Character = {
 })
 export class CharacterDetailsComponent implements OnInit {
 
-  characterId!: string | null;
   characterDetail!: Character;
 
   constructor(
     private route: ActivatedRoute,
-    private httpClient: HttpClient
+    private characterService: ApiCharacterService
   ) { }
 
   ngOnInit(): void {
     this.route.paramMap
       .subscribe((params) => {
-        this.characterId = params.get('id');
-        this.loadCharacterById();
+        const characterId: string | null = params.get('id');
+        // ici je sais que j'ai l'identifiant du personnage
+        if (characterId !== null) {
+          this.characterService
+            .findById(characterId)
+            .subscribe((character) => {
+              this.characterDetail = character
+            });
+        } else {
+          // TODO : afficher un message d'erreur
+        }
       });
-  }
-
-  loadCharacterById() {
-    this.httpClient
-      .get<Character[]>(`https://hp-api.onrender.com/api/character/${this.characterId}`)
-      .subscribe((response) => {
-        this.characterDetail = response[0]
-      })
   }
 }

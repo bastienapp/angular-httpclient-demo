@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-type Character = {
-
-  id: string;
-  name: string;
-  image: string;
-}
+import { Character } from 'src/app/models/character.model';
+import { ApiCharacterService } from 'src/app/services/api-character.service';
 
 @Component({
   selector: 'app-character-list',
@@ -18,16 +12,13 @@ export class CharacterListComponent implements OnInit {
   characterList: Character[] = [];
 
   // constructeur: ne sert qu'à faire de l'injection de dépendance
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private characterService: ApiCharacterService
+  ) { }
 
   ngOnInit(): void {
-    this.loadCharacterList();
-  }
-
-  loadCharacterList() {
-    this.httpClient
-      .get<Character[]>("https://hp-api.onrender.com/api/characters")
-      .subscribe((response) => {
+    this.characterService.findAll()
+      .subscribe((response: Character[]) => {
         this.characterList = response;
       })
   }
